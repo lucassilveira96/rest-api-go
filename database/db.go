@@ -2,6 +2,7 @@ package database
 
 import (
 	"log"
+	"rest-api-go/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,4 +19,11 @@ func DBConnection() {
 	if err != nil {
 		log.Panic("Erro ao conectar com banco de dados")
 	}
+
+	DB.AutoMigrate(&models.User{})
+	DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&models.User{})
+	DB.AutoMigrate(&models.ProductCategory{})
+	DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&models.ProductCategory{})
+	DB.AutoMigrate(&models.Product{})
+	DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(&models.Product{})
 }

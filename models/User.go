@@ -1,11 +1,17 @@
-package userModel
+package models
+
+import (
+	"time"
+)
 
 type User struct {
-	Id    int    `json:"id"`
-	Nome  string `json:"nome"`
-	Idade int    `json:"idade"`
-	Email string `json:"email"`
-	Senha string `json:"senha"`
+	Id        uint   `json:"id"`
+	Username  string `json:"username"`
+	Age       int    `json:"age"`
+	Email     string `json:"email"`
+	password  string
+	CreatedAt time.Time `json:"createdat"`
+	UpdatedAt time.Time `json:"updatedat"`
 }
 
-var Pessoas []User
+var Users []User

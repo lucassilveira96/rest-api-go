@@ -1,16 +1,16 @@
-package userController
+package controllers
 
 import (
 	"encoding/json"
 	"net/http"
 	"rest-api-go/database"
-	userModel "rest-api-go/models"
+	"rest-api-go/models"
 
 	"github.com/gorilla/mux"
 )
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
-	var listUsers []userModel.User
+func GetUser(w http.ResponseWriter, _ *http.Request) {
+	var listUsers []models.User
 	database.DB.Find(&listUsers)
 	json.NewEncoder(w).Encode(listUsers)
 }
@@ -18,14 +18,29 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 func GetUserById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	var user userModel.User
+	var user models.User
 	database.DB.First(&user, id)
 	json.NewEncoder(w).Encode(user)
 }
 
-func Create(w http.ResponseWriter, r *http.Request) {
-	var user userModel.User
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	var user models.User
 	json.NewDecoder(r.Body).Decode(&user)
 	database.DB.Create(&user)
 	json.NewEncoder(w).Encode(&user)
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	var user models.User
+	json.NewDecoder(r.Body).Decode(&user)
+	database.DB.Save(&user)
+	json.NewEncoder(w).Encode(&user)
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id := vars["id"]
+	var user models.User
+	database.DB.Delete(&user, id)
+	json.NewEncoder(w).Encode(user)
 }
